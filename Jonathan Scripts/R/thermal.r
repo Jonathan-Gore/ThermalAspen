@@ -136,12 +136,14 @@ out_dir <- paste0(dir, "output/")
 testlist <- list.files(dir)
 
 #loop function
-loop_img <- function(inputfolder, outputfolder){
+loop_img <- function(inputfolder, outputfolder = inputfolder){
   inputlist <- list.files(inputfolder)
   print(paste0("Initial outside of for loop ", inputlist))
+  dir.create(paste0(outputfolder, "output"))
+  outputfolder <- paste0(outputfolder, "output/")
   
   for (i in 1:length(inputlist)){
-    
+    setwd(inputfolder)
     print(paste0("Inside for loop for iteration (i): ", i, " | the inputlist index is: ",
                  inputlist[i]))
     
@@ -196,8 +198,10 @@ loop_img <- function(inputfolder, outputfolder){
     print(paste0("Converting temperature to scaled_temperature for: ", inputlist[i], " | of i iteration: ", i))
     temperature_scaleconverted <- temperature*(1/max(temperature))
     
+    setwd(outputfolder)
+    
     print(paste0("Writing scaled_temperature to TIFF for: ", inputlist[i], " | of i iteration: ", i))
-    writeTIFF(temperature_scaleconverted, paste0(inputfolder, "scaled", inputlist[i]),
+    writeTIFF(temperature_scaleconverted, paste0(outputfolder, "scaled", inputlist[i]),
                                                  bits.per.sample = 8L,
                                                  compression = "none", 
                                                  reduce = TRUE)
@@ -207,21 +211,7 @@ loop_img <- function(inputfolder, outputfolder){
     
     print(paste0("Current i iteration before restarting for loop: ", i))
   }
-    
+  file.remove(paste0(outputfolder, "tempfile"))
+  file.remove(paste0(inputfolder, "tempfile"))
   return(print("completed loop"))  
 }
-
-
-##for (i in 1:39487) {
-  #ERROR HANDLING
-  ##possibleError <- tryCatch(
-    ##thing(),
-    ##error=function(e) e
-  ##)
-  
-  ##if(inherits(possibleError, "error")) next
-  
-  #REAL WORK
-  ##useful(i); fun(i); good(i);
-  
-##}  #end for
