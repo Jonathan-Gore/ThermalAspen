@@ -10,8 +10,8 @@
 % affine calculation!
 
 %% Import Two Images
-webcam_image = imread('C:\Users\Jonathan\Documents\Projects\Art Thermal\FLIR1757.jpg');
-IR_image = imread('C:\Users\Jonathan\Documents\Projects\Art Thermal\FLIR1756.jpg');
+webcam_image = imread('C:\git\ThermalAspen\calibration\output\scaledIR_60903.jpg');
+IR_image = imread('C:\git\ThermalAspen\calibration\DC_60904.jpg');
 
 %% Show image 1
 imshow(webcam_image);

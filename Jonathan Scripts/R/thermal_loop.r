@@ -2,7 +2,7 @@ library("Thermimage")
 library("tiff")
 
 #setting up workspace and directory addresses
-dir <- "C:/Users/Jonathan/Documents/GitHub/ThermalAspen/data/"
+dir <- "C:/git/ThermalAspen/calibration/"
 
 #loop function
 loop_img <- function(inputfolder, outputfolder = inputfolder){
@@ -52,6 +52,7 @@ loop_img <- function(inputfolder, outputfolder = inputfolder){
     
     inverse <- 1/max(temperature)
     temperature_scaleconverted <- temperature*(1/max(temperature))
+    
     setwd(outputfolder)
     
     writeTIFF(temperature_scaleconverted, paste0(outputfolder, "scaled", inputlist[i]),
