@@ -10,8 +10,8 @@
 % affine calculation!
 
 %% Import Two Images
-webcam_image = imread('C:\git\ThermalAspen\calibration\output\scaledIR_60903.jpg');
-IR_image = imread('C:\git\ThermalAspen\calibration\DC_60904.jpg');
+IR_image = imread('C:\git\ThermalAspen\calibration\output\scaledIR_60903.jpg');
+webcam_image = imread('C:\git\ThermalAspen\calibration\DC_60904.jpg');
 
 %% Show image 1
 imshow(webcam_image);
@@ -39,4 +39,3 @@ Roriginal = imref2d(size(IR_image));
 save('Roriginal.mat', 'Roriginal');
 recovered = imwarp(webcam_image,tform,'OutputView',Roriginal);
 imshowpair(IR_image,recovered,'blend')
-
