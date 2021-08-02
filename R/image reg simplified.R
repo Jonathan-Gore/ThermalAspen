@@ -5,14 +5,15 @@
 library(oro.nifti)
 library(RNiftyReg)
 library(jpeg)
+library(png)
 library(mmand)
 library(Thermimage)
 
-folder.path <- "C:\\Users\\art.woods\\Dropbox\\uClim\\UWyoming_bio_station_2018\\IR_images\\"
+folder.path <- "C:\\Users\\Jonathan\\Documents\\GitHub\\ThermalAspen\\test\\"
 
 ## # Read images and convert to greyscale
-target <- readJPEG(paste0(folder.path, "FLIR1757.jpg"))
-source <- readJPEG(paste0(folder.path, "flirIR_greyscale.jpg"))
+target <- readJPEG(paste0(folder.path, "DC_60904.jpg"))
+source <- readPNG(paste0(folder.path, "scaledIR_60903.jpg"))
 
 ## convert source to greyscale; target is already converted
 target <- apply(target, 1:2, mean)
