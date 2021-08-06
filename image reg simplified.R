@@ -6,17 +6,19 @@ library(oro.nifti)
 library(RNiftyReg)
 library(jpeg)
 library(png)
+library(tiff)
 library(mmand)
 library(Thermimage)
+library(here)
 
-folder.path <- "C:\\Users\\Jonathan\\Documents\\GitHub\\ThermalAspen\\test\\"
+folder.path <- here("test")
 
 ## # Read images and convert to greyscale
-target <- readJPEG(paste0(folder.path, "DC_60904.jpg"))
-source <- readPNG(paste0(folder.path, "scaledIR_60903.jpg"))
+source <- readJPEG(paste0(folder.path, "/", "DC_60904.jpg"))
+target <- readTIFF(paste0(folder.path, "/", "IR_60903_scaled.tiff"))
 
 ## convert source to greyscale; target is already converted
-target <- apply(target, 1:2, mean)
+source <- apply(source, 1:2, mean)
 
 # Register images
 result <- niftyreg(source, target, nLevels = 8) 
@@ -37,7 +39,7 @@ mmand::display(result$image)
 #### try cropping visual images
 
 install.packages("imager")	## this is super awesome package. See details here: https://dahtah.github.io/imager/imager.html#quick-start
-library(imager)
+library("imager")
 
 im.target <- load.image(paste0(folder.path, "FLIR1757.jpg"))
 plot(im.target)
