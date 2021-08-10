@@ -64,5 +64,5 @@ def custom_cpselect(image_path):
     cv2.destroyAllWindows()
 
 # test call of the custom_cpselect function
-custom_cpselect('C:/Users/Jonathan/Documents/GitHub/ThermalAspen/test/IR_60903_scaled.tiff')
-#custom_cpselect('C:/Users/Jonathan/Documents/GitHub/ThermalAspen/test/DC_60904.jpg')
+#custom_cpselect('C:/Users/Jonathan/Documents/GitHub/ThermalAspen/test/IR_60901_scaled.jpg')
+custom_cpselect('C:/Users/Jonathan/Documents/GitHub/ThermalAspen/test/cropped.jpg')
