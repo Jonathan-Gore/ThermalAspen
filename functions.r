@@ -1,11 +1,15 @@
 library("Thermimage")
 library("tiff")
+library("png")
+library("jpeg")
 library("here")
 
-#updated on 8/3/2021
+#updated on 8/9/2021
 
 ## In future need to make this script much more versatile for converting images whereever they are
 ## Instead of only in the "calibration" folder
+## Also need to be able to write the min and max temperature data to the exifdata
+## of the new outputed images for temperature data re-calculation later
 
 #setting up workspace and directory addresses
 ## Don't think I need this if these are all just functions being called
@@ -13,7 +17,7 @@ library("here")
 
 #loop function
 ## May need to actually make more modular so it can be called from anywhere
-loop_img <- function(inputfolder, outputfolder = inputfolder) {
+loop_img <- function(inputfolder, outputfolder = inputfolder, PNGorTIFForJPG = 'PNG') {
   print(paste0("Printing inputfolder: ", inputfolder))
   #print(paste0("Printing inputlist: ", inputlist))
   inputlist <- list.files(inputfolder)
@@ -72,21 +76,37 @@ loop_img <- function(inputfolder, outputfolder = inputfolder) {
                             PlanckR1, PlanckB, PlanckF, PlanckO, PlanckR2,
                             ATA1, ATA2, ATB1, ATB2, ATX)
     
-    #inverse <- 1/max(temperature)
     print(paste0("Scaling temperature for: ", inputlist[i]))
     
-    #temperature_scaleconverted <- temperature*(1/max(temperature))
+    # How to calculated scaled temperature values to convert from
+    # Temperature values to a scale of 0-1 for image writing
+    # ST = (T - MinT)/(MaxT - MinT)
     temperature_scaleconverted <- (temperature-min(temperature))/(max(temperature)-min(temperature))
     
-    #print("setting output folder")
-    #setwd(outputfolder)
+    # solution for re-calculating temperature from imagery:
+    # Temperature = (temperature_scaleconverted * (max(temperature)-min(temperature))) + min(temperature)
+    # T = (ST * (MaxT - MinT)) + MinT
+    
     
     #add paste0() -- running first for troubleshooting
-    print(paste0("writing TIFF for: ", inputlist[i]))
-    writeTIFF(temperature_scaleconverted, paste0(outputfolder,"/", gsub('.jpg', '', basename(inputlist[i])), "_","scaled",".tiff"),
-              bits.per.sample = 8L,
-              compression = "none", 
-              reduce = TRUE)
+    if (PNGorTIFForJPG == 'TIFF') {
+      print(paste0("writing TIFF for: ", inputlist[i]))
+      writeTIFF(temperature_scaleconverted, paste0(outputfolder,"/", gsub('.jpg', '', basename(inputlist[i])), "_","scaled",".tiff"),
+                bits.per.sample = 8L,
+                compression = "none", 
+                reduce = TRUE)
+    } else if (PNGorTIFForJPG == 'PNG') {
+      print(paste0("writing PNG for: ", inputlist[i]))
+      writePNG(temperature_scaleconverted, paste0(outputfolder,"/", gsub('.jpg', '', basename(inputlist[i])), "_","scaled",".png"))
+    } else if (PNGorTIFForJPG == "JPG") {
+      print("Warning, converting Thermal Data to JPG files will result in dataloss due to Lossy Compression")
+      print(paste0("writing JPG for: ", inputlist[i]))
+      writeJPEG(temperature_scaleconverted, paste0(outputfolder,"/", gsub('.jpg', '', basename(inputlist[i])), "_","scaled",".jpg"), quality = 1.0)
+    } else {
+      print("only TIFF and PNG files are supported, incorrect image type provided by the user")
+    }
+  
+    
   }
   
   if (file.exists(paste0(outputfolder, "/tempfile")) == TRUE) {
