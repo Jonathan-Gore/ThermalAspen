@@ -2,8 +2,16 @@
 #Also the first time writing Python in about 1 1/2 years
 #You got this
 
+<<<<<<< Updated upstream
 # custom_cpselect packages
 import cv2
+=======
+import PIL
+
+
+def print_function(string):
+    return print(string)
+>>>>>>> Stashed changes
 
 def custom_cpselect(image_path):
     # function to display the coordinates of
